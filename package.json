@@ -2,7 +2,7 @@
   "name": "redux-funk-immutable",
   "version": "1.0.0",
   "description": "Redux Funk Immutable",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "mkdirp dist && babel src/index.js --out-file dist/index.js",
     "prepublish": "npm run build",
