@@ -1,9 +1,9 @@
 'use strict'
 const queue = Symbol('actions')
-const { Map } = require('immutable')
+const { Map, List, fromJS } = require('immutable')
 
 module.exports.call = (action, funk) => {
-  action[queue] = (action[queue] || []).concat([funk])
+  action[queue] = (action[queue] || []).concat([fromJS(funk)])
 }
 
 // function from reducer to another reducer
@@ -12,7 +12,7 @@ module.exports.call = (action, funk) => {
 // returns an Immutable object
 module.exports.coalesceFunks = reducer => (state, action) => {
   const nextState = reducer(state, action)
-  const funks = action[queue] || []
+  const funks = action[queue] || List()
   // restore action to the way it was
   delete action[queue]
   const map = Map(nextState)
@@ -27,10 +27,10 @@ module.exports.coalesceFunks = reducer => (state, action) => {
 // if you prefer callbacks over promises, for example
 module.exports.runFunks = store => {
   store.subscribe(() => {
-    const funks = store.getState().get('funks') || []
+    const funks = store.getState().get('funks') || List()
     funks.forEach(function(funk) {
-      const func = funk[0]
-      const args = funk[1]
+      const func = funk.get(0)
+      const args = funk.get(1).toArray()
       const maybePromiseForAction = func.apply(null, args)
       if (!maybePromiseForAction || !maybePromiseForAction.then) {
         return

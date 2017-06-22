@@ -3,7 +3,7 @@ const { deepEqual } = require('assert')
 const { createStore } = require('redux')
 const { coalesceFunks, funkMiddleware, call, runFunks } = require('../src/index.js')
 const test = require('tape')
-const { Map } = require('immutable')
+const { fromJS, Map } = require('immutable')
 
 const asyncAction = payload => new Promise((resolve, reject) => {
   resolve({type: 'SECOND', payload})
@@ -32,7 +32,7 @@ test('integration: `call` and `coalesceFunks `', t => {
   const action = {type: 'FIRST'}
   dispatch(action)
   t.deepEqual(
-            getState().get('funks')[0],
+            getState().get('funks')[0].toJS(),
             [asyncAction, ['payload']],
             'funks are added to `state`')
   t.deepEqual(
