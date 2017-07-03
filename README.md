@@ -33,6 +33,11 @@ export const incrementAsync = () => new Promise(resolve => {
   setTimeout(() => resolve({type: 'INCREMENT'}), 1000)
 })
 
+// converting the immutable parameters to JS objects
+export const changeToAsync = (value) => new Promise(resolve => {
+  setTimeout(() => resolve({type: 'CHANGE_TO', value.toJS()}), 1000)
+})
+
 const counter = (state = 0, action) => {
   switch (action.type) {
     case 'INCREMENT':
@@ -43,6 +48,14 @@ const counter = (state = 0, action) => {
       // that says "call incrementAsync with no arguments"
       call(action, [incrementAsync, []])
       return state
+    case 'CHANGE_TO_ASYNC':
+      // demonstrating passing object to call api
+      // parameters passed to value get converted to immutable objects
+      const value = { value: 1 };
+      call(action, [incrementAsync, [value]])
+      return state + 1
+    case 'CHANGE_TO':
+      return action.value
     default:
       return state
   }
@@ -95,4 +108,4 @@ Here's what `runFunks` does:
 
 See [redux-funk-examples](https://github.com/mheiber/redux-funk-examples).
 
-## orginally forked from redux-funk https://github.com/mheiber/redux-funk
+### orginally forked from redux-funk https://github.com/mheiber/redux-funk
