@@ -1,6 +1,6 @@
 {
   "name": "redux-funk-immutable",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Redux Funk Immutable",
   "main": "dist/index.js",
   "scripts": {
