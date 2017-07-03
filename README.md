@@ -53,7 +53,7 @@ const counter = (state = 0, action) => {
       // parameters passed to value get converted to immutable objects
       const value = { value: 1 };
       call(action, [incrementAsync, [value]])
-      return state + 1
+      return state
     case 'CHANGE_TO':
       return action.value
     default:
