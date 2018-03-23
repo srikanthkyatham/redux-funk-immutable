@@ -1,6 +1,6 @@
 'use strict'
 const queue = Symbol('actions')
-const { Map, List, fromJS } = require('immutable')
+const { Map, List, fromJS, Iterable } = require('immutable')
 
 module.exports.call = (action, funk) => {
   action[queue] = (action[queue] || []).concat([fromJS(funk)])
@@ -15,7 +15,7 @@ module.exports.coalesceFunks = reducer => (state, action) => {
   const funks = action[queue] || List()
   // restore action to the way it was
   delete action[queue]
-  const map = Map(nextState)
+  const map = Iterable.isIterable(nextState) ? nextState : Map(nextState)
   return map.set('funks', funks)
 }
 
