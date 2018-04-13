@@ -16,9 +16,17 @@ module.exports.coalesceFunks = reducer => (state, action) => {
   const funks = action[queue] || List
   // restore action to the way it was
   ();delete action[queue];
-  const map = Iterable.isIterable(nextState) ? nextState : Map(nextState);
-  const existingFunks = map.get('funks');
-  if (funks.size !== existingFunks.size && funks !== existingFunks) {
+  const map = Iterable.isIterable(nextState) ? nextState : new Map(nextState);
+  const existingFunks = map.get('funks'
+  // setting funks if
+  // 1. no existing funks
+  // 2. sizes of existing funks is different from the funks
+  // 3. funks are different and also the sizes of existingFunks and funks are different
+  //    example: existingFunks could already be List(), if the newly created funks
+  //             is also List()
+  // funks sizes are different from existing and
+  // does
+  );if (!existingFunks || funks.size !== existingFunks.size || funks !== existingFunks && funks.size !== existingFunks.size) {
     return map.set('funks', funks);
   }
   return map;
